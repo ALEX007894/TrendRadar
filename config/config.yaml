@@ -99,7 +99,15 @@ platforms:
     name: "贴吧"
   - id: "weibo"
     name: "微博"
+  - id: "weibo_hot"
+    name: "微博实时热搜榜"
+  - id: "weibo_celebrity"
+    name: "微博明星榜" 
   - id: "douyin"
     name: "抖音"
   - id: "zhihu"
     name: "知乎"
+
+fetch_interval: 30
+
+match_threshold: 0.7
