@@ -1,18 +1,45 @@
-# 监控平台（确保包含微博）
-platforms:
-  - weibo_hot  # 微博实时热搜榜（重点监控）
-  - weibo      # 微博综合热搜
-  - weibo_celebrity  # 微博明星榜（如有关联）
-
-# 推送频率（监控微博建议10-15分钟）
-fetch_interval: 10  # 每10分钟检查一次
-
-# 关键词匹配阈值（数字越小越宽松）
-match_threshold: 0.7  # 适当提高匹配精度
-
-# 通知方式（可同时配置多种）
+# 核心监控配置
 report:
-  dingtalk: false    # 关闭钉钉通知（如之前启用）
-  feishu: true       # 开启飞书通知
-  email: false       # 关闭邮件通知
-  wecom: false       # 关闭企业微信通知
+  mode: "incremental"  # 增量监控（仅推送新增命中热搜，避免重复）
+  dingtalk: false      # 关闭钉钉通知
+  feishu: true         # 开启飞书通知
+  email: false         # 关闭邮件通知
+  wecom: false         # 关闭企业微信通知
+  qq: false            # 关闭QQ通知
+  push_interval: 5     # 通知频率限制（同一关键词5分钟内不重复推送）
+
+# 监控平台配置（仅保留微博相关，提高爬取效率）
+platforms:
+  - weibo              # 微博综合热搜榜
+  - weibo_hot          # 微博实时热搜榜（核心监控）
+  - weibo_celebrity    # 微博明星榜（适配叶国富相关动态）
+  - weibo_topic        # 微博热门话题榜（补充监控）
+
+# 爬取与匹配参数
+fetch_interval: 10     # 每10分钟爬取一次（贴合微博热搜更新频率）
+match_threshold: 0.7   # 关键词匹配精度（0.1-1.0，越高越精准）
+hot_threshold: 100000  # 热度阈值（仅推送热度≥10万的热搜，过滤低流量内容）
+max_results: 50        # 每次爬取最多获取50条热搜（覆盖全量热门）
+
+# 存储配置（默认本地存储，GitHub Actions无需修改）
+storage:
+  type: "json"         # 存储格式（json/csv可选）
+  path: "./data/hotnews.json"  # 存储路径
+  save_days: 7         # 历史数据保留7天
+
+# 日志配置（便于排查问题）
+log:
+  level: "info"        # 日志级别（debug/info/warn/error）
+  path: "./logs/trendradar.log"  # 日志存储路径
+  rotate: true         # 日志轮转（避免文件过大）
+
+# 代理配置（无需代理可保持默认）
+proxy:
+  enable: false        # 关闭代理（国内环境无需代理爬取微博）
+  http: ""             # HTTP代理地址（如需启用填写格式：http://ip:port）
+  https: ""            # HTTPS代理地址
+
+# 扩展配置
+timeout: 30            # 爬取超时时间（30秒，避免卡壳）
+retry_times: 3         # 爬取失败重试次数（3次，提高稳定性）
+user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"  # 模拟浏览器请求，避免被反爬
