@@ -27,6 +27,10 @@ crawler:
 report:
   mode: "daily" # 可选: "daily"|"incremental"|"current"
   rank_threshold: 5 # 排名高亮阈值
+  dingtalk: false    # 关闭钉钉通知（如之前启用）
+  feishu: true       # 开启飞书通知
+  email: false       # 关闭邮件通知
+  wecom: false       # 关闭企业微信通知
 
 notification:
   enable_notification: true # 是否启用通知功能，如果 false，则不发送手机通知
