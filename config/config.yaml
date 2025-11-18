@@ -83,9 +83,9 @@ weight:
 platforms:
   - id: "weibo"
     name: "微博"
-  - id: "weibo_hot"
+  - id: "weibo-hot"
     name: "微博实时热搜榜"
-  - id: "weibo_celebrity"
+  - id: "weibo-celebrity"
     name: "微博明星榜" 
 
 fetch_interval: 30
